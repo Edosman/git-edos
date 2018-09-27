@@ -5,13 +5,14 @@
  * @version Sept 27, 2018
  */
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
 class HomeWork_8 {
     public static void main(String[] args) {
-        new edos.Window();
+        new Window();
     }
 }
 
@@ -20,7 +21,7 @@ class Window extends JFrame {
         setTitle("Калькулятор");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setBounds(700, 300, 250, 425);
-        add(new edos.PanelWindow());
+        add(new PanelWindow());
         setResizable(false);
         setVisible(true);
     }
@@ -29,19 +30,14 @@ class Window extends JFrame {
 class Calculation {
 
     float calculation(float number1, float number2, float result, String operation) {
-        switch (operation) {
-            case "+":
-                result = number1 + number2;
-                break;
-            case "-":
-                result = number1 - number2;
-                break;
-            case "*":
-                result = number1 * number2;
-                break;
-            case "/":
-                result = number1 / number2;
-                break;
+        if (operation.equals("+")) {
+            result = number1 + number2;
+        } else if (operation.equals("-")) {
+            result = number1 - number2;
+        } else if (operation.equals("*")) {
+            result = number1 * number2;
+        } else if (operation.equals("/")) {
+            result = number1 / number2;
         }
         return result;
     }
@@ -114,6 +110,7 @@ class PanelWindow extends JPanel {
         panel1.setPreferredSize(new Dimension(250, 80));
         panel2.setPreferredSize(new Dimension(250, 330));
         textArea.setLineWrap(true);
+        textArea.setFont(font2);
 
         // Устанавливаем шрифт
         buttonClean.setFont(font);
@@ -134,7 +131,6 @@ class PanelWindow extends JPanel {
         buttonDiv.setFont(font);
         buttonEqual.setFont(font);
         buttonPoint.setFont(font);
-        textArea.setFont(font2);
 
         // Устанавливаем цвет фона
         panel1.setBackground(Color.LIGHT_GRAY);
@@ -175,10 +171,12 @@ class PanelWindow extends JPanel {
             cleanText = 0;
             panel1.setBackground(Color.LIGHT_GRAY);
         });
+
         buttonDell.addActionListener(e -> {
             String temp = textArea.getText();
             textArea.setText(temp.substring(0, temp.length() - 1));
         });
+
         buttonOne.addActionListener(e -> {
             if (cleanText == 0) {
                 textArea.setText("");
@@ -259,31 +257,36 @@ class PanelWindow extends JPanel {
             textArea.setText(textArea.getText() + ".");
             cleanText++;
         });
+
         buttonPlus.addActionListener(e -> {
             number1 = Float.valueOf(textArea.getText());
             textArea.setText("");
             operation = "+";
         });
+
         buttonMinus.addActionListener(e -> {
             number1 = Float.valueOf(textArea.getText());
             textArea.setText("");
             operation = "-";
         });
+
         buttonMultiply.addActionListener(e -> {
             number1 = Float.valueOf(textArea.getText());
             textArea.setText("");
             operation = "*";
         });
+
         buttonDiv.addActionListener(e -> {
             number1 = Float.valueOf(textArea.getText());
             textArea.setText("");
             operation = "/";
         });
+
         buttonEqual.addActionListener(e -> {
             number2 = Float.valueOf(textArea.getText());
-            edos.Calculation calc = new edos.Calculation();
+            Calculation calc = new Calculation();
             if (radioButtonOnOff.isSelected()) {
-                edos.Protest protest = new edos.Protest();
+                Protest protest = new Protest();
                 protest.protest(textArea, panel1);
                 if (count == numberOfmesseges) {
                     textArea.setText("Окей-Окей!\nОтвет: " + String.valueOf(calc.calculation(number1, number2, result, operation)));
@@ -300,6 +303,7 @@ class PanelWindow extends JPanel {
             result = 0;
             cleanText = 0;
         });
+
         buttonReadMe.addActionListener(e -> {
             panel1.setBackground(Color.LIGHT_GRAY);
             textArea.setText("Этот калькулятор нужно настойчиво упрашивать и тогда он снизойдёт!");
