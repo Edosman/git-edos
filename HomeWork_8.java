@@ -30,14 +30,19 @@ class Window extends JFrame {
 class Calculation {
 
     float calculation(float number1, float number2, float result, String operation) {
-        if (operation.equals("+")) {
-            result = number1 + number2;
-        } else if (operation.equals("-")) {
-            result = number1 - number2;
-        } else if (operation.equals("*")) {
-            result = number1 * number2;
-        } else if (operation.equals("/")) {
-            result = number1 / number2;
+        switch (operation) {
+            case "+":
+                result = number1 + number2;
+                break;
+            case "-":
+                result = number1 - number2;
+                break;
+            case "*":
+                result = number1 * number2;
+                break;
+            case "/":
+                result = number1 / number2;
+                break;
         }
         return result;
     }
