@@ -28,7 +28,6 @@ class Window extends JFrame {
 }
 
 class Calculation {
-
     float calculation(float number1, float number2, float result, String operation) {
         switch (operation) {
             case "+":
