@@ -1,20 +1,19 @@
-package com.company;
-
 import java.util.Arrays;
 
-public class Main {
+class Main {
     static final int size = 10000000;
-    static final int numberOfTreads = 2;
+    static final int numberOfTreads = 5;
     static final int h = size / numberOfTreads;
-    private float[] arr = new float[size];
 
     public static void main(String[] args) {
+
         Main main = new Main();
         main.method_1();
         main.method_2();
     }
 
     private void method_1() {
+        float[] arr = new float[size];
         Arrays.fill(arr, 1);
         long a = System.currentTimeMillis();
         for (int i = 0; i < size; i++) {
@@ -23,62 +22,52 @@ public class Main {
         System.out.println("Затраченное время на выполненике процесса в одном потоке: " + (System.currentTimeMillis() - a) + " миллисекунд");
     }
 
-    private void method_2() {
-        float[] part1 = new float[h];
-        float[] part2 = new float[h];
+
+    void method_2() {
+
+        float[] arr = new float[size];
+        float[][] array = new float[numberOfTreads][h];
+
+        Arrays.fill(arr, 1);
 
         long start = System.currentTimeMillis();
-        System.arraycopy(arr, 0, part1, 0, h);
-        System.arraycopy(arr, h, part2, 0, h);
 
-        MyThread t1 = new MyThread("a", part1);
-        MyThread t2 = new MyThread("b", part2);
+        Thread[] threads = new Thread[numberOfTreads];
 
-        t1.start();
-        t2.start();
-
+        for (int i = 0; i < numberOfTreads; i++) {
+            System.arraycopy(arr, h * i, array[i], 0, h);
+            threads[i] = new Thread(new Calculation(array[i], h * i));
+            threads[i].start();
+        }
         try {
-            t1.join();
-            t2.join();
+            for (int i = 0; i < coinThreads; i++) {
+                t[i].join();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        part1 = t1.getArr();
-        part2 = t2.getArr();
-
-        System.arraycopy(part1, 0, arr, 0, h);
-        System.arraycopy(part2, h, arr, part1.length, part2.length);
-
-        long multiTime = System.currentTimeMillis()-start;
-
-        System.out.println(multiTime);
-
-        // Arrays.fill(arr, 1);
-        long a = System.currentTimeMillis();
-
-    }
-}
-
-class MyThread extends Thread {
-    private float[] arr;
-
-    MyThread(String a, float[] arr) {
-        this.arr = arr;
-    }
-
-    float[] getArr() {
-        return arr;
-    }
-    @Override
-    public void run(){
-        calculation();
-    }
-
-    private void calculation() {
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+        for (int i = 0; i < numberOfTreads; i++) {
+            System.arraycopy(array[i], 0, arr, h * i, h);
         }
-        System.out.println("Конец");
+        System.out.println("Затраченное время на выполненике в " + numberOfTreads + " потоках " + (System.currentTimeMillis() - start + " миллисекунд"));
+    }
+
+    class Calculation implements Runnable {
+        private float[] array;
+        private int change;
+
+        Calculation(float[] array, int change) {
+
+            this.array = array;
+            this.change = change;
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < array.length; i++)
+                array[i] = (float) (array[i] *
+                        Math.sin(0.2f + (i + change) / 5) * Math.cos(0.2f + (i + change) / 5) * Math.cos(0.4f + (i + change) / 2));
+        }
     }
 }
