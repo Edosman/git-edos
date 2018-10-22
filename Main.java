@@ -40,13 +40,12 @@ class Main {
             threads[i].start();
         }
         try {
-            for (int i = 0; i < coinThreads; i++) {
-                t[i].join();
+            for (int i = 0; i < numberOfTreads; i++) {
+                threads[i].join();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         for (int i = 0; i < numberOfTreads; i++) {
             System.arraycopy(array[i], 0, arr, h * i, h);
         }
