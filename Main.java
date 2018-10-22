@@ -55,7 +55,6 @@ class Main {
 
     class Calculation implements Runnable {
         private float[] array;
-       // private int change;
 
         Calculation(float[] array) {
 
