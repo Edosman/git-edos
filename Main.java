@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 class Main {
     static final int size = 10000000;
-    static final int numberOfTreads = 5;
+    static final int numberOfTreads = 2;
     static final int h = size / numberOfTreads;
 
     public static void main(String[] args) {
@@ -22,6 +22,7 @@ class Main {
         System.out.println("Затраченное время на выполненике процесса в одном потоке: " + (System.currentTimeMillis() - a) + " миллисекунд");
     }
 
+
     void method_2() {
 
         float[] arr = new float[size];
@@ -35,10 +36,9 @@ class Main {
 
         for (int i = 0; i < numberOfTreads; i++) {
             System.arraycopy(arr, h * i, array[i], 0, h);
-            threads[i] = new Thread(new Calculation(array[i], h * i));
+            threads[i] = new Thread(new Calculation(array[i]));
             threads[i].start();
         }
-        
         try {
             for (int i = 0; i < numberOfTreads; i++) {
                 threads[i].join();
@@ -46,7 +46,7 @@ class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
         for (int i = 0; i < numberOfTreads; i++) {
             System.arraycopy(array[i], 0, arr, h * i, h);
         }
@@ -55,18 +55,17 @@ class Main {
 
     class Calculation implements Runnable {
         private float[] array;
-        private int change;
+       // private int change;
 
-        Calculation(float[] array, int change) {
+        Calculation(float[] array) {
+
             this.array = array;
-            this.change = change;
         }
 
         @Override
         public void run() {
             for (int i = 0; i < array.length; i++)
-                array[i] = (float) (array[i] *
-                        Math.sin(0.2f + (i + change) / 5) * Math.cos(0.2f + (i + change) / 5) * Math.cos(0.4f + (i + change) / 2));
+                array[i] = (float) (array[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
         }
     }
 }
