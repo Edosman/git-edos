@@ -22,7 +22,6 @@ class Main {
         System.out.println("Затраченное время на выполненике процесса в одном потоке: " + (System.currentTimeMillis() - a) + " миллисекунд");
     }
 
-
     void method_2() {
 
         float[] arr = new float[size];
@@ -39,6 +38,7 @@ class Main {
             threads[i] = new Thread(new Calculation(array[i], h * i));
             threads[i].start();
         }
+        
         try {
             for (int i = 0; i < numberOfTreads; i++) {
                 threads[i].join();
@@ -46,6 +46,7 @@ class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        
         for (int i = 0; i < numberOfTreads; i++) {
             System.arraycopy(array[i], 0, arr, h * i, h);
         }
@@ -57,7 +58,6 @@ class Main {
         private int change;
 
         Calculation(float[] array, int change) {
-
             this.array = array;
             this.change = change;
         }
