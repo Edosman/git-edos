@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 class Main {
     static final int size = 10000000;
-    static final int numberOfTreads = 2;
+    static final int numberOfTreads = 5;
     static final int h = size / numberOfTreads;
 
     public static void main(String[] args) {
