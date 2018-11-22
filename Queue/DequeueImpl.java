@@ -77,14 +77,4 @@ public class DequeueImpl implements Dequeue {
     public int getSize() {
         return size;
     }
-
-    @Override
-    public int remove() {
-        return 0;
-    }
-
-    @Override
-    public void insert(int value) {
-
-    }
 }
