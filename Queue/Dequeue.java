@@ -1,6 +1,11 @@
 package com.company.Queue;
 
-public interface Dequeue extends Queue{
+public interface Dequeue {
+
+    boolean isEmpty();
+    boolean isFull();
+
+    int getSize();
 
     void insertRight(int value);
     void insertLeft(int value);
